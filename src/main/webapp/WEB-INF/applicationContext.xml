@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:security="http://www.springframework.org/schema/security"
+  xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+    http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+  <import resource="classpath*:spring/mongo-setup.xml" />
+
+  <context:property-placeholder
+    location="classpath:default-config.properties, file:${user.home}/.skl-natpatques/config.properties, ${SKL_NATPATQUES}"
+    ignore-resource-not-found="true" ignore-unresolvable="true" />
+
+  <context:annotation-config />
+
+  <!-- HTTP basic authentication in Spring Security -->
+  <security:http>
+    <security:intercept-url pattern="/*" access="ROLE_ADMIN" method="POST" />
+    <security:intercept-url pattern="/*" access="ROLE_ADMIN" method="DELETE" />
+    <security:http-basic />
+  </security:http>
+
+  <security:authentication-manager>
+    <security:authentication-provider>
+      <security:user-service>
+        <security:user name="admin" password="123456" authorities="ROLE_ADMIN" />
+      </security:user-service>
+    </security:authentication-provider>
+  </security:authentication-manager>
+
+  <bean class="se.callistaenterprise.rest.SurveyResource">
+    <constructor-arg ref="mongoTemplate" />
+  </bean>
+
+  <!-- <bean id="bean2CSVWriter" class="se.callistaenterprise.rest.writers.Bean2CSVWriter"> -->
+  <!-- <constructor-arg ref="beanProperties" /> -->
+  <!-- </bean> -->
+
+  <!-- <bean class="se.callistaenterprise.rest.writers.IndicatorCollection2CSVWriter" scope="singleton"> -->
+  <!-- <property name="cSVWriter" ref="bean2CSVWriter" /> -->
+  <!-- </bean> -->
+
+  <!-- <bean class="se.callistaenterprise.rest.writers.Indicator2CSVWriter" scope="singleton"> -->
+  <!-- <property name="cSVWriter" ref="bean2CSVWriter" /> -->
+  <!-- </bean> -->
+</beans>
