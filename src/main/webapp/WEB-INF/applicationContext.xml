@@ -10,8 +10,8 @@
   <import resource="classpath*:spring/mongo-setup.xml" />
 
   <context:property-placeholder
-    location="classpath:default-config.properties, file:${user.home}/.skl-natpatques/config.properties, ${SKL_NATPATQUES}"
-    ignore-resource-not-found="true" ignore-unresolvable="true" />
+  location="classpath:default-config.properties, file:${user.home}/.skl-natpatques/config.properties, ${SKL_NATPATQUES}"
+  ignore-resource-not-found="true" ignore-unresolvable="true" />
 
   <context:annotation-config />
 
@@ -22,14 +22,10 @@
     <security:http-basic />
   </security:http>
 
-  <util:properties id="users" location="file:${user.home}/.skl-natpatques/users.properties" />
-
-  <bean id="myUserDetailsService" class="org.springframework.security.provisioning.InMemoryUserDetailsManager">
-    <constructor-arg ref="users" />
-  </bean>
-
   <security:authentication-manager>
-    <security:authentication-provider user-service-ref="myUserDetailsService" />
+    <security:authentication-provider>
+      <security:user-service properties="file:${user.home}/.skl-natpatques/users.properties" />
+    </security:authentication-provider>
   </security:authentication-manager>
 
   <bean class="se.callistaenterprise.rest.SurveyResource">
