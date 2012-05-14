@@ -22,27 +22,18 @@
     <security:http-basic />
   </security:http>
 
+  <util:properties id="users" location="file:${user.home}/.skl-natpatques/users.properties" />
+
+  <bean id="myUserDetailsService" class="org.springframework.security.provisioning.InMemoryUserDetailsManager">
+    <constructor-arg ref="users" />
+  </bean>
+
   <security:authentication-manager>
-    <security:authentication-provider>
-      <security:user-service>
-        <security:user name="admin" password="123456" authorities="ROLE_ADMIN" />
-      </security:user-service>
-    </security:authentication-provider>
+    <security:authentication-provider user-service-ref="myUserDetailsService" />
   </security:authentication-manager>
 
   <bean class="se.callistaenterprise.rest.SurveyResource">
     <constructor-arg ref="mongoTemplate" />
   </bean>
 
-  <!-- <bean id="bean2CSVWriter" class="se.callistaenterprise.rest.writers.Bean2CSVWriter"> -->
-  <!-- <constructor-arg ref="beanProperties" /> -->
-  <!-- </bean> -->
-
-  <!-- <bean class="se.callistaenterprise.rest.writers.IndicatorCollection2CSVWriter" scope="singleton"> -->
-  <!-- <property name="cSVWriter" ref="bean2CSVWriter" /> -->
-  <!-- </bean> -->
-
-  <!-- <bean class="se.callistaenterprise.rest.writers.Indicator2CSVWriter" scope="singleton"> -->
-  <!-- <property name="cSVWriter" ref="bean2CSVWriter" /> -->
-  <!-- </bean> -->
 </beans>
