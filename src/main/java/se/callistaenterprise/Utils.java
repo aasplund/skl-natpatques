@@ -41,6 +41,5 @@ public final class Utils {
         } catch (NullPointerException e) {
             return null;
         }
-
     }
 }

@@ -17,20 +17,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 @XmlRootElement
 public final class Survey {
-    @XmlAttribute @Id private String hsaId;
+    @XmlElement private String hsaId;
     @XmlElement private Date startDateQuestionnaire;
     @XmlElement private Date endDateQuestionnaire;
     @JsonIgnore @Indexed private int year;

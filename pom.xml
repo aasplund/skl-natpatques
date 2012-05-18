@@ -299,7 +299,7 @@
         <artifactId>maven-jetty-plugin</artifactId>
         <version>6.1.26</version>
         <configuration>
-          <contextPath>/skl-natpatques/v1</contextPath>
+          <contextPath>/natpatques/v1</contextPath>
           <scanIntervalSeconds>1</scanIntervalSeconds>
           <connectors>
             <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">

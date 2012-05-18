@@ -11,6 +11,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -44,7 +46,7 @@ public class SurveyRepositoryIntegrationTest {
 
     @Test
     public void shouldFindCareUnitByHsaId() {
-        Survey acctualCareUnit = template.findById("1", Survey.class);
+        Survey acctualCareUnit = template.findOne(new Query(Criteria.where("hsaId").is("1")), Survey.class);
         assertThat(acctualCareUnit, is(notNullValue()));
         assertThat(acctualCareUnit.getHsaId(), is("1"));
         assert(true);

@@ -28,6 +28,9 @@ import com.mongodb.DBCollection;
 
 @Controller
 @Path("/indicators")
+@Produces({ "application/json;charset=UTF-8;qs=3.5", "application/vnd-skl.natpatques.puk.v1+json;charset=UTF-8;qs=3.2",
+        "application/xml;charset=UTF-8;qs=2.5", "application/vnd-skl.natpatques.puk.v1+xml;charset=UTF-8;qs=2.2",
+        "application/csv;charset=UTF-8;qs=1.5", "application/vnd-skl.natpatques.puk.v1+csv;charset=UTF-8;qs=1.2" })
 public class SurveyResource {
 
     @Context private UriInfo uriInfo;
@@ -39,10 +42,6 @@ public class SurveyResource {
     }
 
     @GET
-    @Produces({ "application/json;charset=UTF-8;qs=3.5",
-            "application/vnd-riv.orgmaster.hsa.v1+json;charset=UTF-8;qs=3.2", "application/xml;charset=UTF-8;qs=2.5",
-            "application/vnd-riv.orgmaster.hsa.v1+xml;charset=UTF-8;qs=2.2", "application/csv;charset=UTF-8;qs=1.5",
-            "application/vnd-riv.orgmaster.hsa.v1+csv;charset=UTF-8;qs=1.2" })
     @SuppressWarnings("unchecked")
     public Links findAll() {
         List<Integer> years = mongoTemplate.getCollection(Survey.class.getSimpleName().toLowerCase()).distinct("year");
@@ -55,10 +54,6 @@ public class SurveyResource {
 
     @GET
     @Path("/{year}")
-    @Produces({ "application/json;charset=UTF-8;qs=3.5",
-            "application/vnd-riv.orgmaster.hsa.v1+json;charset=UTF-8;qs=3.2", "application/xml;charset=UTF-8;qs=2.5",
-            "application/vnd-riv.orgmaster.hsa.v1+xml;charset=UTF-8;qs=2.2", "application/csv;charset=UTF-8;qs=1.5",
-            "application/vnd-riv.orgmaster.hsa.v1+csv;charset=UTF-8;qs=1.2" })
     @SuppressWarnings("unchecked")
     public Links getIndicators(@PathParam("year") Integer year) {
         String collectionName = Survey.class.getSimpleName().toLowerCase();
@@ -74,13 +69,17 @@ public class SurveyResource {
 
     @GET
     @Path("/{year}/{county}")
-    @Produces({ "application/json;charset=UTF-8;qs=3.5",
-            "application/vnd-riv.orgmaster.hsa.v1+json;charset=UTF-8;qs=3.2", "application/xml;charset=UTF-8;qs=2.5",
-            "application/vnd-riv.orgmaster.hsa.v1+xml;charset=UTF-8;qs=2.2", "application/csv;charset=UTF-8;qs=1.5",
-            "application/vnd-riv.orgmaster.hsa.v1+csv;charset=UTF-8;qs=1.2" })
     public Collection<Survey> getIndicators(@PathParam("year") Integer year, @PathParam("county") String county) {
         Criteria c = Criteria.where("year").is(year).and("county").is(county);
         return mongoTemplate.find(new Query(c), Survey.class);
+    }
+
+    @GET
+    @Path("/{year}/{county}/{hsaId}")
+    public Survey getIndicatorsForUnit(@PathParam("year") Integer year, @PathParam("county") String county,
+            @PathParam("hsaId") String hsaId) {
+        Criteria c = Criteria.where("year").is(year).and("county").is(county).and("hsaId").is(hsaId);
+        return mongoTemplate.findOne(new Query(c), Survey.class);
     }
 
     @DELETE
